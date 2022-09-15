@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  transmission:
+    container_name: transmission
+    image: lscr.io/linuxserver/transmission:latest
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - UMASK=002
+      - TZ=${TIMEZONE}
+      - USER=${BT_USER}
+      - PASS=${BT_PASSWORD}
+    volumes:
+      - ./config/transmission:/config
+      - ${ROOT_DIR}:/data
+      - ${ROOT_DIR}/torrents/incomplete:/downloads/incomplete
+      - ${ROOT_DIR}/torrents/to_download:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - UMASK=002
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./config/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - UMASK=002
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./config/readarr:/config
+      - ${ROOT_DIR}:/data
+    ports:
+      - 8787:8787
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - UMASK=002
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./config/radarr:/config
+      - ${ROOT_DIR}:/data
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - UMASK=002
+      - TZ=${TIMEZONE}
+    volumes:
+      - ./config/bazarr:/config
+      - ${ROOT_DIR}/media/movies:/movies
+      - ${ROOT_DIR}/media/tv:/tv
+    ports:
+      - 6767:6767
+    restart: unless-stopped
