@@ -65,18 +65,33 @@ services:
       - 7878:7878
     restart: unless-stopped
 
-  bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
-    container_name: bazarr
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
     environment:
       - PUID=${UID}
       - PGID=${GID}
       - UMASK=002
       - TZ=${TIMEZONE}
     volumes:
-      - ./config/bazarr:/config
-      - ${ROOT_DIR}/media/movies:/movies
-      - ${ROOT_DIR}/media/tv:/tv
+      - ./config/sonarr:/config
+      - ${ROOT_DIR}:/data
     ports:
-      - 6767:6767
+      - 8989:8989
     restart: unless-stopped
+
+#  bazarr:
+#    image: lscr.io/linuxserver/bazarr:latest
+#    container_name: bazarr
+#    environment:
+#      - PUID=${UID}
+#      - PGID=${GID}
+#      - UMASK=002
+#      - TZ=${TIMEZONE}
+#    volumes:
+#      - ./config/bazarr:/config
+#      - ${ROOT_DIR}/media/movies:/movies
+#      - ${ROOT_DIR}/media/tv:/tv
+#    ports:
+#      - 6767:6767
+#    restart: unless-stopped
