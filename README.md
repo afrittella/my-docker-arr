@@ -1,5 +1,5 @@
 # my-docker-arr
-Repo that provides a basic docker setup for the following "arr" stack:
+Repo that provides a basic docker setup for the following "arr" applications (+ Transmission):
 
 1. Transmission
 2. Prowlarr
